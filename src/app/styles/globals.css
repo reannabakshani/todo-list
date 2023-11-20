@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: #000;
+  --background: #fff;
+  --mainBlue: #2C67A2;
+  --lowPri: #74C4A7;
+  --medPri: #7397F7;
+  --highPri: #D7807F;
+  --lightText: #9F9F9F;
+  --lightGrey: #F4F4F4;
+}
+
+input:focus {
+  border: solid 2px var(--lightText);
+  outline: solid 2px var(--lightGrey);
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+} */
+
+

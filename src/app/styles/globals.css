@@ -13,10 +13,10 @@
   --lightGrey: #F4F4F4;
 }
 
-input:focus {
+/* input:focus {
   border: solid 2px var(--lightText);
   outline: solid 2px var(--lightGrey);
-}
+} */
 
 /* @media (prefers-color-scheme: dark) {
   :root {

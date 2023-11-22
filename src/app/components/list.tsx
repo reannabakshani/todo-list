@@ -1,3 +1,4 @@
+"use client"
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { Raleway } from "next/font/google";
@@ -23,7 +24,7 @@ const raleway = Raleway({
   subsets: ["latin"],
 });
 
-export default function List() {
+export default function List({priority, listName, status }: {priority?:string, listName?: string, status?: string}) {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [edit, setEdit] = useState({ id: -1, toEdit: false });
   const [current, setCurrent] = useState<TaskType>({
@@ -88,10 +89,12 @@ export default function List() {
     });
   };
 
+  const filteredTasks = status ? tasks.filter(task=> task.status ===status): tasks;
+
   return (
     <div className="h-full w-full flex flex-col items-start justify-start flex-grow">
       <div className=" flex flex-wrap justify-between gap-x-8 gap-y-5 w-full h-auto">
-        {tasks.map((task: TaskType) => (
+        {filteredTasks.map((task: TaskType) => (
           <>
             {edit.toEdit && task.id === edit.id ? (
               <div

@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Raleway } from "next/font/google";
 import { TextField } from "@mui/material";
 
@@ -12,9 +12,18 @@ const raleway = Raleway({
 
 export default function CreateNewList() {
   const [listName, setListName] = useState("");
+  const [storedLists, setStoredLists] = useState([]);
+
+  useEffect(()=>{
+    const localLists = localStorage.getItem("localLists");
+    if (localLists) {
+      setStoredLists(JSON.parse(localLists));
+    }
+  }, [])
 
   const handleSubmit= () => {
     console.log(listName)
+    localStorage.setItem("localLists", JSON.stringify([...storedLists, {name: listName, id: storedLists.length}]));
   }
 
 

@@ -131,7 +131,6 @@ export default function CreateNewTask() {
               handleOnChange(event, "status");
             }}
           >
-            <MenuItem value={"yet to start"}>Yet to start</MenuItem>
             <MenuItem value={"in progress"}>In progress</MenuItem>
             <MenuItem value={"completed"}>Completed</MenuItem>
             <MenuItem value={"overdue"}>Overdue</MenuItem>

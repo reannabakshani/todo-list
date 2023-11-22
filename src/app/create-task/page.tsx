@@ -50,7 +50,7 @@ export default function CreateNewTask() {
 
   const handleSubmit = () => {
     console.log(task);
-    localStorage.setItem("localTasks", JSON.stringify([...storedTasks, {...task, dateMade: new Date}]))
+    localStorage.setItem("localTasks", JSON.stringify([...storedTasks, {...task, id: storedTasks.length}]))
   };
 
   const handleOnChange = (
@@ -122,7 +122,7 @@ export default function CreateNewTask() {
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Status</InputLabel>
           <Select
-          defaultValue="yet to start"
+          defaultValue="in progress"
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={task.status}
@@ -131,9 +131,10 @@ export default function CreateNewTask() {
               handleOnChange(event, "status");
             }}
           >
+
             <MenuItem value={"in progress"}>In progress</MenuItem>
             <MenuItem value={"completed"}>Completed</MenuItem>
-            <MenuItem value={"overdue"}>Overdue</MenuItem>
+            {/* <MenuItem value={"overdue"}>Overdue</MenuItem> */}
           </Select>
         </FormControl>
         <button

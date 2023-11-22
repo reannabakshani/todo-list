@@ -2,7 +2,9 @@ import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { Raleway } from "next/font/google";
 import {
+  Checkbox,
   FormControl,
+  FormControlLabel,
   IconButton,
   InputLabel,
   MenuItem,
@@ -23,14 +25,14 @@ const raleway = Raleway({
 
 export default function List() {
   const [tasks, setTasks] = useState<TaskType[]>([]);
-  const [edit, setEdit] = useState({ dateMade: "", toEdit: false });
+  const [edit, setEdit] = useState({ id: -1, toEdit: false });
   const [current, setCurrent] = useState<TaskType>({
     name: "",
     priority: "",
     list: "",
     due: dayjs(),
     status: "",
-    dateMade: "",
+    id: -1,
   });
 
   type TaskType = {
@@ -39,7 +41,7 @@ export default function List() {
     list: string;
     due: string | Dayjs | null;
     status: string;
-    dateMade: string;
+    id: number;
   };
 
   useEffect(() => {
@@ -64,7 +66,7 @@ export default function List() {
   const handleEditSave = () => {
     setTasks((prevTasks) => {
       const updatedTasks = prevTasks.map((task) => {
-        if (task.dateMade === current.dateMade) {
+        if (task.id === current.id) {
           return current;
         } else {
           return task;
@@ -78,7 +80,7 @@ export default function List() {
   const handleDelete = () => {
     setTasks((prevTasks) => {
       const updatedTasks = prevTasks.filter(
-        (task) => task.dateMade !== current.dateMade
+        (task) => task.id !== current.id
       );
 
       localStorage.setItem("localTasks", JSON.stringify(updatedTasks));
@@ -91,10 +93,10 @@ export default function List() {
       <div className=" flex flex-wrap justify-between gap-x-8 gap-y-5 w-full h-auto">
         {tasks.map((task: TaskType) => (
           <>
-            {edit.toEdit && task.dateMade === edit.dateMade ? (
+            {edit.toEdit && task.id === edit.id ? (
               <div
                 className="h-auto w-3/12 bg-white p-5 flex flex-col items-start justify-start rounded-3xl gap-y-5 flex-grow"
-                key={task.dateMade}
+                key={task.id}
               >
                 <div className="flex items-start justify-start gap-x-2 flex-wrap w-full">
                   <FormControl className="w-28">
@@ -132,7 +134,6 @@ export default function List() {
                         handleOnChange(event, "status");
                       }}
                     >
-                      <MenuItem value={"yet to start"}>Yet to start</MenuItem>
                       <MenuItem value={"in progress"}>In progress</MenuItem>
                       <MenuItem value={"completed"}>Completed</MenuItem>
                       <MenuItem value={"overdue"}>Overdue</MenuItem>
@@ -175,7 +176,7 @@ export default function List() {
                   <div
                     className={`bg-[var(--lightGrey)] w-auto rounded-full px-3 text-sm py-1 text-[lightText] cursor-pointer`}
                     onClick={() => {
-                      setEdit({ dateMade: "", toEdit: false });
+                      setEdit({ id: -1, toEdit: false });
                     }}
                   >
                     cancel
@@ -183,7 +184,7 @@ export default function List() {
                   <div
                     className={`bg-black w-auto rounded-full px-3 text-sm py-1 text-white cursor-pointer`}
                     onClick={() => {
-                      setEdit({ dateMade: "", toEdit: false });
+                      setEdit({ id: -1, toEdit: false });
 
                       if (current !== task) {
                         handleEditSave();
@@ -197,7 +198,7 @@ export default function List() {
             ) : (
               <div
                 className=" h-min w-3/12 bg-white p-5 flex flex-col items-start justify-start rounded-3xl gap-y-2 flex-grow"
-                key={task.dateMade}
+                key={task.id}
               >
                 <div className="flex items-start justify-start gap-x-2 flex-wrap">
                   <div
@@ -222,12 +223,37 @@ export default function List() {
                 </div>
                 <div className="flex items-end justify-end w-full">
                   <div></div>
+                  <FormControlLabel
+                    control={<Checkbox />}
+                    label="Completed?"
+                    checked={task.status === "completed" ? true : false}
+                    className="mr-auto "
+                    onChange={() => {
+                      setTasks((prevTasks) => {
+                        const updatedTasks = prevTasks.map((oldtask) => {
+                          if (oldtask.id === task.id) {
+                            console.log(oldtask.id)
+                            
+                              return { ...oldtask,  status: oldtask.status === "completed" ? "in progress" : "completed" };
+                            
+                          } else {
+                            return oldtask;
+                          }
+                        });
+                        localStorage.setItem(
+                          "localTasks",
+                          JSON.stringify(updatedTasks)
+                        );
+                        return updatedTasks;
+                      });
+                    }}
+                  />
                   <IconButton
                     className="bg-[var(--lightGrey)] text-[var(--lightText)]"
                     onClick={() => {
                       setEdit({
                         ...edit,
-                        dateMade: task.dateMade,
+                        id: task.id,
                         toEdit: !edit.toEdit,
                       });
                       setCurrent(task);

@@ -32,7 +32,7 @@ export default function MenuBar() {
 
   return (
     <>
-      <div className="w-80 max-h-[calc(100vh-5rem)] overflow-y-scroll flex flex-col items-center justify-start gap-y-5 px-8 pt-20 pb-20 text-base ">
+      <div className="w-80 max-h-[calc(100vh-5rem)] min-h-[calc(100vh-5rem)] overflow-y-scroll flex flex-col items-center justify-start gap-y-5 px-8 pt-20 pb-20 text-base ">
         <div className="px-3 mr-auto">Menu</div>
         <div>
           <Link

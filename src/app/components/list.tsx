@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from "react";
 import { Raleway } from "next/font/google";
@@ -24,7 +24,15 @@ const raleway = Raleway({
   subsets: ["latin"],
 });
 
-export default function List({priority, listName, status }: {priority?:string, listName?: string, status?: string}) {
+export default function List({
+  priority,
+  listName,
+  status,
+}: {
+  priority?: string;
+  listName?: string;
+  status?: string;
+}) {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [edit, setEdit] = useState({ id: -1, toEdit: false });
   const [current, setCurrent] = useState<TaskType>({
@@ -80,27 +88,24 @@ export default function List({priority, listName, status }: {priority?:string, l
 
   const handleDelete = () => {
     setTasks((prevTasks) => {
-      const updatedTasks = prevTasks.filter(
-        (task) => task.id !== current.id
-      );
+      const updatedTasks = prevTasks.filter((task) => task.id !== current.id);
 
       localStorage.setItem("localTasks", JSON.stringify(updatedTasks));
       return updatedTasks;
     });
   };
 
-  const filteredTasks = status ? tasks.filter(task=> task.status ===status): tasks;
+  const filteredTasks = status
+    ? tasks.filter((task) => task.status === status)
+    : tasks;
 
   return (
     <div className="h-full w-full flex flex-col items-start justify-start flex-grow">
       <div className=" flex flex-wrap justify-between gap-x-8 gap-y-5 w-full h-auto">
         {filteredTasks.map((task: TaskType) => (
-          <>
+          <div className="h-auto w-3/12 flex-grow" key={task.id}>
             {edit.toEdit && task.id === edit.id ? (
-              <div
-                className="h-auto w-3/12 bg-white p-5 flex flex-col items-start justify-start rounded-3xl gap-y-5 flex-grow"
-                key={task.id}
-              >
+              <div className="h-auto w-full bg-white p-5 flex flex-col items-start justify-start rounded-3xl gap-y-5 flex-grow">
                 <div className="flex items-start justify-start gap-x-2 flex-wrap w-full">
                   <FormControl className="w-28">
                     <InputLabel id="demo-simple-select-label">
@@ -200,7 +205,7 @@ export default function List({priority, listName, status }: {priority?:string, l
               </div>
             ) : (
               <div
-                className=" h-min w-3/12 bg-white p-5 flex flex-col items-start justify-start rounded-3xl gap-y-2 flex-grow"
+                className=" h-min w-full bg-white p-5 flex flex-col items-start justify-start rounded-3xl gap-y-2 flex-grow"
                 key={task.id}
               >
                 <div className="flex items-start justify-start gap-x-2 flex-wrap">
@@ -235,10 +240,15 @@ export default function List({priority, listName, status }: {priority?:string, l
                       setTasks((prevTasks) => {
                         const updatedTasks = prevTasks.map((oldtask) => {
                           if (oldtask.id === task.id) {
-                            console.log(oldtask.id)
-                            
-                              return { ...oldtask,  status: oldtask.status === "completed" ? "in progress" : "completed" };
-                            
+                            console.log(oldtask.id);
+
+                            return {
+                              ...oldtask,
+                              status:
+                                oldtask.status === "completed"
+                                  ? "in progress"
+                                  : "completed",
+                            };
                           } else {
                             return oldtask;
                           }
@@ -267,7 +277,7 @@ export default function List({priority, listName, status }: {priority?:string, l
                 </div>
               </div>
             )}
-          </>
+          </div>
         ))}
       </div>
     </div>
